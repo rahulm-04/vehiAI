@@ -33,7 +33,7 @@ import { Label } from "@/components/ui/label";
 
 import Image from "next/image";
 import { addCar, processCarImageWithAI } from "@/actions/cars";
-import useFetch from "@/Hooks/use-fetch";
+import useFetch from "@/hooks/use-fetch";
 
 // Predefined options
 const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"];
