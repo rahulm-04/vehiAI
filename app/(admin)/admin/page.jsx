@@ -1,6 +1,9 @@
 import { getDashboardData } from "@/actions/admin";
 import { Dashboard } from "./_Components/dashboard";
 
+export const dynamic = "force-dynamic";
+
+
 
 export const metadata = {
   title: "Dashboard | Vehiql Admin",
