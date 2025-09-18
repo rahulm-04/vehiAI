@@ -105,7 +105,7 @@ model TestDriveBooking {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   car         Car           @relation(fields: [carId], references: [id])
-  user        User          @relation(fields: [userId], references: [id])
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([carId])
   @@index([userId])
