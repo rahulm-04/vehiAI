@@ -4,7 +4,6 @@ import { Value } from '@radix-ui/react-select';
 const nextConfig = {
   experimental: {
     serverComponentsHmrCache: false,
-    turbo: false, 
   },
 
   images: {
