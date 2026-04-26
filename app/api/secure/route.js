@@ -1,4 +1,6 @@
 // app/api/secure/route.js
+
+export const dynamic = "force-dynamic";
 import arcjet, { shield, detectBot } from "@arcjet/next";
 
 const aj = arcjet({

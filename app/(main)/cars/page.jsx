@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 
 import { getCarFilters } from "@/actions/car-listing";
 import { CarFilters } from "./_components/car-filters";
