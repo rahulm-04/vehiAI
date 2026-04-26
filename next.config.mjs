@@ -1,16 +1,11 @@
-import { Value } from '@radix-ui/react-select';
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverComponentsHmrCache: false,
-  },
-
   images: {
     remotePatterns: [
       {
         protocol: "https",
         hostname: "kufahfzqwtarzjsaynfd.supabase.co",
+        pathname: "/storage/v1/object/public/**", // ✅ IMPORTANT
       },
     ],
   },
