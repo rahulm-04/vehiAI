@@ -104,35 +104,39 @@ export async function addCar({ carData, images }) {
     for (let i = 0; i < images.length; i++) {
       const base64Data = images[i];
 
-      // ✅ Correct validation
+      // ✅ Validate image
       if (!base64Data || !base64Data.startsWith("data:image/")) {
         console.warn("Skipping invalid image data");
         continue;
       }
 
-      // ✅ Extract base64 and extension
+      // ✅ Extract base64
       const base64 = base64Data.split(",")[1];
-      const imageBuffer = Buffer.from(base64, "base64");
 
+      // ✅ Convert base64 → Uint8Array (FIXED)
+      const byteArray = Uint8Array.from(Buffer.from(base64, "base64"));
+
+
+      // ✅ Get file extension
       const mimeMatch = base64Data.match(/data:image\/([a-zA-Z0-9]+);/);
       const fileExtension = mimeMatch ? mimeMatch[1] : "jpeg";
 
       const fileName = `image-${Date.now()}-${i}.${fileExtension}`;
       const filePath = `${folderPath}/${fileName}`;
 
-      //  Upload to Supabase
+      // ✅ Upload to Supabase (FIXED)
       const { error } = await supabase.storage
         .from("car-images")
-        .upload(filePath, imageBuffer, {
-          contentType: `image/${fileExtension}`, 
+        .upload(filePath, byteArray, {
+          contentType: `image/${fileExtension}`,
         });
 
       if (error) {
-        console.error("Error uploading image:", error);
+        console.error("UPLOAD ERROR:", error);
         throw new Error(`Failed to upload image: ${error.message}`);
       }
 
-      // Get public URL
+      // ✅ Get public URL
       const { data: publicUrlData } = supabase.storage
         .from("car-images")
         .getPublicUrl(filePath);
@@ -144,7 +148,8 @@ export async function addCar({ carData, images }) {
       throw new Error("No valid images were uploaded");
     }
 
-    const car = await db.car.create({
+    // ✅ Save car in DB
+    await db.car.create({
       data: {
         id: carId,
         make: carData.make,
@@ -164,18 +169,15 @@ export async function addCar({ carData, images }) {
       },
     });
 
-   
-
-   // Revalidate the cars list page
     revalidatePath("/admin/cars");
 
-    return {
-      success: true,
-    };
+    return { success: true };
   } catch (error) {
-    throw new Error("Error adding car:" + error.message);
+    console.error("ADD CAR ERROR:", error);
+    throw new Error("Error adding car: " + error.message);
   }
 }
+    
 
 // Fetch all cars with simple search
 export async function getCars(search = "") {
