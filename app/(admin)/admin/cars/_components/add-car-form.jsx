@@ -125,7 +125,7 @@ export default function AddCarForm() {
       featured: false,
     },
   });
-  console.log("FORM VALUES:", watch());
+ 
 
   // Custom hooks for API calls
   const {
