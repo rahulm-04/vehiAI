@@ -356,11 +356,12 @@ export default function AddCarForm() {
                   {/* Model */}
                   <div className="space-y-2">
                     <Label htmlFor="model">Model</Label>
-                    <Input
-                      id="model"
-                      {...register("model")}
-                      placeholder="e.g. Camry"
-                      className={errors.model ? "border-red-500" : ""}
+                    <Controller
+                      name="model"
+                      control={control}
+                      render={({ field }) => (
+                        <Input {...field} placeholder="Camry" />
+                      )}
                     />
                     {errors.model && (
                       <p className="text-xs text-red-500">
@@ -395,12 +396,12 @@ export default function AddCarForm() {
                   {/* Price */}
                   <div className="space-y-2">
                     <Label htmlFor="price">Price ($)</Label>
-                    <Input
-                      type="number"
-                      id="price"
-                      {...register("price")}
-                      placeholder="e.g. 25000"
-                      className={errors.price ? "border-red-500" : ""}
+                    <Controller
+                      name="price"
+                      control={control}
+                      render={({ field }) => (
+                        <Input type="number" {...field} placeholder="25000" />
+                      )}
                     />
                     {errors.price && (
                       <p className="text-xs text-red-500">
@@ -412,12 +413,12 @@ export default function AddCarForm() {
                   {/* Mileage */}
                   <div className="space-y-2">
                     <Label htmlFor="mileage">Mileage</Label>
-                    <Input
-                      type="number"
-                      id="mileage"
-                      {...register("mileage")}
-                      placeholder="e.g. 15000"
-                      className={errors.mileage ? "border-red-500" : ""}
+                    <Controller
+                      name="mileage"
+                      control={control}
+                      render={({ field }) => (
+                        <Input type="number" {...field} placeholder="15000" />
+                      )}
                     />
                     {errors.mileage && (
                       <p className="text-xs text-red-500">
@@ -429,11 +430,12 @@ export default function AddCarForm() {
                   {/* Color */}
                   <div className="space-y-2">
                     <Label htmlFor="color">Color</Label>
-                    <Input
-                      id="color"
-                      {...register("color")}
-                      placeholder="e.g. Blue"
-                      className={errors.color ? "border-red-500" : ""}
+                    <Controller
+                      name="color"
+                      control={control}
+                      render={({ field }) => (
+                        <Input {...field} placeholder="Blue" />
+                      )}
                     />
                     {errors.color && (
                       <p className="text-xs text-red-500">
@@ -445,25 +447,27 @@ export default function AddCarForm() {
                   {/* Fuel Type */}
                   <div className="space-y-2">
                     <Label htmlFor="fuelType">Fuel Type</Label>
-                    <Select
-                      onValueChange={(value) =>
-                        setValue("fuelType", value, { shouldValidate: true })
-                      }
-                      defaultValue={getValues("fuelType")}
-                    >
-                      <SelectTrigger
-                        className={errors.fuelType ? "border-red-500" : ""}
-                      >
-                        <SelectValue placeholder="Select fuel type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {fuelTypes.map((type) => (
-                          <SelectItem key={type} value={type}>
-                            {type}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <Controller
+                      name="fuelType"
+                      control={control}
+                      render={({ field }) => (
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select fuel type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {fuelTypes.map((type) => (
+                              <SelectItem key={type} value={type}>
+                                {type}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
                     {errors.fuelType && (
                       <p className="text-xs text-red-500">
                         {errors.fuelType.message}
@@ -474,27 +478,27 @@ export default function AddCarForm() {
                   {/* Transmission */}
                   <div className="space-y-2">
                     <Label htmlFor="transmission">Transmission</Label>
-                    <Select
-                      onValueChange={(value) =>
-                        setValue("transmission", value, {
-                          shouldValidate: true,
-                        })
-                      }
-                      defaultValue={getValues("transmission")}
-                    >
-                      <SelectTrigger
-                        className={errors.transmission ? "border-red-500" : ""}
-                      >
-                        <SelectValue placeholder="Select transmission" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {transmissions.map((type) => (
-                          <SelectItem key={type} value={type}>
-                            {type}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <Controller
+                      name="transmission"
+                      control={control}
+                      render={({ field }) => (
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select transmission" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {transmissions.map((type) => (
+                              <SelectItem key={type} value={type}>
+                                {type}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
                     {errors.transmission && (
                       <p className="text-xs text-red-500">
                         {errors.transmission.message}
@@ -505,25 +509,27 @@ export default function AddCarForm() {
                   {/* Body Type */}
                   <div className="space-y-2">
                     <Label htmlFor="bodyType">Body Type</Label>
-                    <Select
-                      onValueChange={(value) =>
-                        setValue("bodyType", value, { shouldValidate: true })
-                      }
-                      defaultValue={getValues("bodyType")}
-                    >
-                      <SelectTrigger
-                        className={errors.bodyType ? "border-red-500" : ""}
-                      >
-                        <SelectValue placeholder="Select body type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {bodyTypes.map((type) => (
-                          <SelectItem key={type} value={type}>
-                            {type}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <Controller
+                      name="bodyType"
+                      control={control}
+                      render={({ field }) => (
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select body type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {bodyTypes.map((type) => (
+                              <SelectItem key={type} value={type}>
+                                {type}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
                     {errors.bodyType && (
                       <p className="text-xs text-red-500">
                         {errors.bodyType.message}
@@ -537,47 +543,51 @@ export default function AddCarForm() {
                       Number of Seats{" "}
                       <span className="text-sm text-gray-500">(Optional)</span>
                     </Label>
-                    <Input
-                      type="number"
-                      id="seats"
-                      {...register("seats")}
-                      placeholder="e.g. 5"
+                    <Controller
+                      name="seats"
+                      control={control}
+                      render={({ field }) => (
+                        <Input type="number" {...field} placeholder="5" />
+                      )}
                     />
                   </div>
 
                   {/* Status */}
                   <div className="space-y-2">
                     <Label htmlFor="status">Status</Label>
-                    <Select
-                      onValueChange={(value) =>
-                        setValue("status", value, { shouldValidate: true })
-                      }
-                      defaultValue={getValues("status")}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {carStatuses.map((status) => (
-                          <SelectItem key={status} value={status}>
-                            {status.charAt(0) + status.slice(1).toLowerCase()}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <Controller
+                      name="status"
+                      control={control}
+                      render={({ field }) => (
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select status" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {carStatuses.map((status) => (
+                              <SelectItem key={status} value={status}>
+                                {status}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
                   </div>
                 </div>
 
                 {/* Description */}
                 <div className="space-y-2">
                   <Label htmlFor="description">Description</Label>
-                  <Textarea
-                    id="description"
-                    {...register("description")}
-                    placeholder="Enter detailed description of the car..."
-                    className={`min-h-32 ${
-                      errors.description ? "border-red-500" : ""
-                    }`}
+                  <Controller
+                    name="description"
+                    control={control}
+                    render={({ field }) => (
+                      <Textarea {...field} placeholder="Enter description..." />
+                    )}
                   />
                   {errors.description && (
                     <p className="text-xs text-red-500">
@@ -588,12 +598,15 @@ export default function AddCarForm() {
 
                 {/* Featured */}
                 <div className="flex items-start space-x-3 space-y-0 rounded-md border p-4">
-                  <Checkbox
-                    id="featured"
-                    checked={watch("featured")}
-                    onCheckedChange={(checked) => {
-                      setValue("featured", checked);
-                    }}
+                  <Controller
+                    name="featured"
+                    control={control}
+                    render={({ field }) => (
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    )}
                   />
                   <div className="space-y-1 leading-none">
                     <Label htmlFor="featured">Feature this car</Label>
