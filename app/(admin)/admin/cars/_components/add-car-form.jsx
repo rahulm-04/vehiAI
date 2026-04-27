@@ -112,6 +112,7 @@ export default function AddCarForm (){
       featured: false,
     },
   });
+  console.log(errors)
 
   // Custom hooks for API calls
   const {
