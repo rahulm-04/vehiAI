@@ -53,22 +53,29 @@ const carStatuses = ["AVAILABLE", "UNAVAILABLE", "SOLD"];
 const carFormSchema = z.object({
   make: z.string().min(1, "Make is required"),
   model: z.string().min(1, "Model is required"),
-  year: z.string().refine((val) => {
-    const year = parseInt(val);
-    return !isNaN(year) && year >= 1900 && year <= new Date().getFullYear() + 1;
-  }, "Valid year required"),
-  price: z.string().min(1, "Price is required"),
-  mileage: z.string().min(1, "Mileage is required"),
+
+  year: z.coerce
+    .number()
+    .min(1900, "Year must be >= 1900")
+    .max(new Date().getFullYear() + 1, "Invalid year"),
+
+  price: z.coerce.number().min(1, "Price is required"),
+
+  mileage: z.coerce.number().min(0, "Mileage is required"),
+
   color: z.string().min(1, "Color is required"),
   fuelType: z.string().min(1, "Fuel type is required"),
   transmission: z.string().min(1, "Transmission is required"),
   bodyType: z.string().min(1, "Body type is required"),
-  seats: z.string().optional(),
+
+  seats: z.coerce.number().optional(),
+
   description: z.string().min(10, "Description must be at least 10 characters"),
+
   status: z.enum(["AVAILABLE", "UNAVAILABLE", "SOLD"]),
   featured: z.boolean().default(false),
-  // Images are handled separately
 });
+
 
 export default function AddCarForm (){
   const router = useRouter();
@@ -277,12 +284,9 @@ export default function AddCarForm (){
 
     // Prepare data for server action
     const carData = {
-      ...data,
-      year: parseInt(data.year),
-      price: parseFloat(data.price),
-      mileage: parseInt(data.mileage),
-      seats: data.seats ? parseInt(data.seats) : null,
-    };
+  ...data,
+  seats: data.seats || null,
+};
 
     // Call the addCar function with our useFetch hook
     await addCarFn({
