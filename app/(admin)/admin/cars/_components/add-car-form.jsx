@@ -54,21 +54,27 @@ const carFormSchema = z.object({
   make: z.string().min(1, "Make is required"),
   model: z.string().min(1, "Model is required"),
 
-  year: z.coerce
-    .number()
-    .min(1900, "Year must be >= 1900")
-    .max(new Date().getFullYear() + 1, "Invalid year"),
+  year: z
+    .string()
+    .min(1, "Year is required")
+    .transform((val) => Number(val)),
 
-  price: z.coerce.number().min(1, "Price is required"),
+  price: z
+    .string()
+    .min(1, "Price is required")
+    .transform((val) => Number(val)),
 
-  mileage: z.coerce.number().min(0, "Mileage is required"),
+  mileage: z
+    .string()
+    .min(1, "Mileage is required")
+    .transform((val) => Number(val)),
 
   color: z.string().min(1, "Color is required"),
   fuelType: z.string().min(1, "Fuel type is required"),
   transmission: z.string().min(1, "Transmission is required"),
   bodyType: z.string().min(1, "Body type is required"),
 
-  seats: z.coerce.number().optional(),
+  seats: z.string().optional().transform((val) => val ? Number(val) : null),
 
   description: z.string().min(10, "Description must be at least 10 characters"),
 
