@@ -16,7 +16,7 @@ const AdminLayout = async({children}) => {
   return(
      <div className='h-full'>
     <Header isAdminPage={true}/>
-    <div className='flex h-full w-56 flex-col top-20 fixed inset-y-0 z-50'>
+    <div className='flex h-full w-56 flex-col top-20 left-0 fixed inset-y-0 z-30'>
       <Sidebar/>
     </div>
     <main className='md:pl-56 pt-[80px] h-full'>{children}</main>
