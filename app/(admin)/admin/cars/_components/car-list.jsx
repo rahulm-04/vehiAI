@@ -119,22 +119,28 @@ export const CarsList = () => {
 
   // Handle delete car
   const handleDeleteCar = async () => {
-    if (!carToDelete) return;
+  if (!carToDelete) return;
 
-    await deleteCarFn(carToDelete.id);
-    setDeleteDialogOpen(false);
-    setCarToDelete(null);
-  };
+  await deleteCarFn({ id: carToDelete.id });
+  setDeleteDialogOpen(false);
+  setCarToDelete(null);
+};
 
   // Handle toggle featured status
-  const handleToggleFeatured = async (car) => {
-    await updateCarStatusFn(car.id, { featured: !car.featured });
-  };
+const handleToggleFeatured = async (car) => {
+  await updateCarStatusFn({
+    id: car.id,
+    data: { featured: !car.featured },
+  });
+};
 
-  // Handle status change
-  const handleStatusUpdate = async (car, newStatus) => {
-    await updateCarStatusFn(car.id, { status: newStatus });
-  };
+// Handle status change
+const handleStatusUpdate = async (car, newStatus) => {
+  await updateCarStatusFn({
+    id: car.id,
+    data: { status: newStatus },
+  });
+};
 
   // Get status badge color
   const getStatusBadge = (status) => {
@@ -193,8 +199,10 @@ export const CarsList = () => {
       <Card>
         <CardContent className="p-0">
           <div className="p-4">
-            <Button onClick={() => alert("clicked")}>Test Click</Button>
-          </div>
+      <Button onClick={() => alert("clicked")}>
+        Test Click
+      </Button>
+    </div>
           {loadingCars && !carsData ? (
             <div className="flex justify-center items-center py-12">
               <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
