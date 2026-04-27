@@ -197,7 +197,7 @@ export const CarsList = () => {
               <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
             </div>
           ) : carsData?.success && carsData.data.length > 0 ? (
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto relative">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -263,7 +263,7 @@ export const CarsList = () => {
                               <MoreHorizontal className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
+                          <DropdownMenuContent align="end" className="z-50">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuItem
                               onClick={() => router.push(`/cars/${car.id}`)}
