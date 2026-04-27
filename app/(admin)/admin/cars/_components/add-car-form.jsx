@@ -336,12 +336,16 @@ export default function AddCarForm() {
                   {/* Make */}
                   <div className="space-y-2">
                     <Label htmlFor="make">Make</Label>
-                    <Input
-                      id="make"
-                      {...register("make")}
-                      placeholder="e.g. Toyota"
-                      className={errors.make ? "border-red-500" : ""}
+                    <Controller
+                      name="make"
+                      control={control}
+                      render={({ field }) => (
+                        <Input {...field} placeholder="Toyota" />
+                      )}
                     />
+                    {errors.make && (
+                      <p className="text-red-500">{errors.make.message}</p>
+                    )}
                     {errors.make && (
                       <p className="text-xs text-red-500">
                         {errors.make.message}
