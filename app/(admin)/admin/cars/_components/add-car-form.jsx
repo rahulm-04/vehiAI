@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
@@ -30,7 +30,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 
-
 import Image from "next/image";
 import { addCar, processCarImageWithAI } from "@/actions/cars";
 import useFetch from "@/hooks/use-fetch";
@@ -55,31 +54,32 @@ const carFormSchema = z.object({
   model: z.string().min(1, "Model is required"),
 
   year: z.preprocess(
-  (val) => (val === "" ? undefined : Number(val)),
-  z.number({ required_error: "Year is required" })
-    .min(1900, "Year must be >= 1900")
-    .max(new Date().getFullYear() + 1, "Invalid year")
-),
+    (val) => (val === "" ? undefined : Number(val)),
+    z
+      .number({ required_error: "Year is required" })
+      .min(1900, "Year must be >= 1900")
+      .max(new Date().getFullYear() + 1, "Invalid year"),
+  ),
 
   price: z.preprocess(
-  (val) => (val === "" ? undefined : Number(val)),
-  z.number({ required_error: "Price is required" }).min(1)
-),
+    (val) => (val === "" ? undefined : Number(val)),
+    z.number({ required_error: "Price is required" }).min(1),
+  ),
 
- mileage: z.preprocess(
-  (val) => (val === "" ? undefined : Number(val)),
-  z.number({ required_error: "Mileage is required" }).min(0)
-),
+  mileage: z.preprocess(
+    (val) => (val === "" ? undefined : Number(val)),
+    z.number({ required_error: "Mileage is required" }).min(0),
+  ),
 
   color: z.string().min(1, "Color is required"),
   fuelType: z.string().min(1, "Fuel type is required"),
   transmission: z.string().min(1, "Transmission is required"),
   bodyType: z.string().min(1, "Body type is required"),
 
- seats: z.preprocess(
-  (val) => (val === "" ? undefined : Number(val)),
-  z.number().optional()
-),
+  seats: z.preprocess(
+    (val) => (val === "" ? undefined : Number(val)),
+    z.number().optional(),
+  ),
 
   description: z.string().min(10, "Description must be at least 10 characters"),
 
@@ -87,8 +87,7 @@ const carFormSchema = z.object({
   featured: z.boolean().default(false),
 });
 
-
-export default function AddCarForm (){
+export default function AddCarForm() {
   const router = useRouter();
   const [imagePreview, setImagePreview] = useState(null);
   const [uploadedImages, setUploadedImages] = useState([]);
@@ -100,6 +99,7 @@ export default function AddCarForm (){
   // Initialize form with react-hook-form and zod
   const {
     register,
+    control,
     setValue,
     getValues,
     formState: { errors },
@@ -107,7 +107,7 @@ export default function AddCarForm (){
     watch,
   } = useForm({
     resolver: zodResolver(carFormSchema),
-    mode: "onSubmit",        
+    mode: "onSubmit",
     reValidateMode: "onChange",
     defaultValues: {
       make: "",
@@ -125,7 +125,7 @@ export default function AddCarForm (){
       featured: false,
     },
   });
-  console.log(errors)
+  console.log("FORM VALUES:", watch());
 
   // Custom hooks for API calls
   const {
@@ -263,7 +263,7 @@ export default function AddCarForm (){
               setUploadProgress(0);
               setImageError("");
               toast.success(
-                `Successfully uploaded ${validFiles.length} images`
+                `Successfully uploaded ${validFiles.length} images`,
               );
             }
           };
@@ -298,9 +298,9 @@ export default function AddCarForm (){
 
     // Prepare data for server action
     const carData = {
-  ...data,
-  seats: data.seats || null,
-};
+      ...data,
+      seats: data.seats || null,
+    };
 
     // Call the addCar function with our useFetch hook
     await addCarFn({
@@ -368,12 +368,18 @@ export default function AddCarForm (){
                   {/* Year */}
                   <div className="space-y-2">
                     <Label htmlFor="year">Year</Label>
-                    <Input
-                      type="number"
-                      id="year"
-                      {...register("year")}
-                      placeholder="e.g. 2022"
-                      className={errors.year ? "border-red-500" : ""}
+                    <Controller
+                      name="year"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          type="number"
+                          id="year"
+                          placeholder="e.g. 2022"
+                          {...field}
+                          className={errors.year ? "border-red-500" : ""}
+                        />
+                      )}
                     />
                     {errors.year && (
                       <p className="text-xs text-red-500">
@@ -436,7 +442,9 @@ export default function AddCarForm (){
                   <div className="space-y-2">
                     <Label htmlFor="fuelType">Fuel Type</Label>
                     <Select
-                      onValueChange={(value) => setValue("fuelType", value,{ shouldValidate: true })}
+                      onValueChange={(value) =>
+                        setValue("fuelType", value, { shouldValidate: true })
+                      }
                       defaultValue={getValues("fuelType")}
                     >
                       <SelectTrigger
@@ -463,7 +471,11 @@ export default function AddCarForm (){
                   <div className="space-y-2">
                     <Label htmlFor="transmission">Transmission</Label>
                     <Select
-                      onValueChange={(value) => setValue("transmission", value, { shouldValidate: true })}
+                      onValueChange={(value) =>
+                        setValue("transmission", value, {
+                          shouldValidate: true,
+                        })
+                      }
                       defaultValue={getValues("transmission")}
                     >
                       <SelectTrigger
@@ -490,7 +502,9 @@ export default function AddCarForm (){
                   <div className="space-y-2">
                     <Label htmlFor="bodyType">Body Type</Label>
                     <Select
-                      onValueChange={(value) => setValue("bodyType", value, { shouldValidate: true })}
+                      onValueChange={(value) =>
+                        setValue("bodyType", value, { shouldValidate: true })
+                      }
                       defaultValue={getValues("bodyType")}
                     >
                       <SelectTrigger
@@ -531,7 +545,9 @@ export default function AddCarForm (){
                   <div className="space-y-2">
                     <Label htmlFor="status">Status</Label>
                     <Select
-                      onValueChange={(value) => setValue("status", value, { shouldValidate: true })}
+                      onValueChange={(value) =>
+                        setValue("status", value, { shouldValidate: true })
+                      }
                       defaultValue={getValues("status")}
                     >
                       <SelectTrigger>
@@ -783,4 +799,4 @@ export default function AddCarForm (){
       </Tabs>
     </div>
   );
-};
+}
