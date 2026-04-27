@@ -192,6 +192,9 @@ export const CarsList = () => {
       {/* Cars Table */}
       <Card>
         <CardContent className="p-0">
+          <div className="p-4">
+            <Button onClick={() => alert("clicked")}>Test Click</Button>
+          </div>
           {loadingCars && !carsData ? (
             <div className="flex justify-center items-center py-12">
               <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
