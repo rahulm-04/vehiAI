@@ -355,6 +355,7 @@ export default function AddCarForm (){
                   <div className="space-y-2">
                     <Label htmlFor="year">Year</Label>
                     <Input
+                      type="number"
                       id="year"
                       {...register("year")}
                       placeholder="e.g. 2022"
@@ -371,6 +372,7 @@ export default function AddCarForm (){
                   <div className="space-y-2">
                     <Label htmlFor="price">Price ($)</Label>
                     <Input
+                      type="number"
                       id="price"
                       {...register("price")}
                       placeholder="e.g. 25000"
@@ -387,6 +389,7 @@ export default function AddCarForm (){
                   <div className="space-y-2">
                     <Label htmlFor="mileage">Mileage</Label>
                     <Input
+                      type="number"
                       id="mileage"
                       {...register("mileage")}
                       placeholder="e.g. 15000"
@@ -419,7 +422,7 @@ export default function AddCarForm (){
                   <div className="space-y-2">
                     <Label htmlFor="fuelType">Fuel Type</Label>
                     <Select
-                      onValueChange={(value) => setValue("fuelType", value)}
+                      onValueChange={(value) => setValue("fuelType", value,{ shouldValidate: true })}
                       defaultValue={getValues("fuelType")}
                     >
                       <SelectTrigger
@@ -446,7 +449,7 @@ export default function AddCarForm (){
                   <div className="space-y-2">
                     <Label htmlFor="transmission">Transmission</Label>
                     <Select
-                      onValueChange={(value) => setValue("transmission", value)}
+                      onValueChange={(value) => setValue("transmission", value, { shouldValidate: true })}
                       defaultValue={getValues("transmission")}
                     >
                       <SelectTrigger
@@ -473,7 +476,7 @@ export default function AddCarForm (){
                   <div className="space-y-2">
                     <Label htmlFor="bodyType">Body Type</Label>
                     <Select
-                      onValueChange={(value) => setValue("bodyType", value)}
+                      onValueChange={(value) => setValue("bodyType", value, { shouldValidate: true })}
                       defaultValue={getValues("bodyType")}
                     >
                       <SelectTrigger
@@ -503,6 +506,7 @@ export default function AddCarForm (){
                       <span className="text-sm text-gray-500">(Optional)</span>
                     </Label>
                     <Input
+                      type="number"
                       id="seats"
                       {...register("seats")}
                       placeholder="e.g. 5"
@@ -513,7 +517,7 @@ export default function AddCarForm (){
                   <div className="space-y-2">
                     <Label htmlFor="status">Status</Label>
                     <Select
-                      onValueChange={(value) => setValue("status", value)}
+                      onValueChange={(value) => setValue("status", value, { shouldValidate: true })}
                       defaultValue={getValues("status")}
                     >
                       <SelectTrigger>
